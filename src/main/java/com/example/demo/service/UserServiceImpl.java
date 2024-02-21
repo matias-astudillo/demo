@@ -43,4 +43,32 @@ public class UserServiceImpl implements UserService {
         // Aquí se agrega el usuario en el repositorio
         return userRepository.save(user);
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public User updateUser(Long id, String nombre, String correo) {
+        // Verificar si la ID existe
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+
+        // Validar el formato del correo electrónico
+        if (!Pattern.matches(EMAIL_REGEX, correo)) {
+            throw new RuntimeException("El formato del correo electrónico no es válido");
+        }
+
+        Date now = new Date();
+
+        User existingUser = userRepository.findById(id).orElse(null);
+        existingUser.setNombre(nombre);
+        existingUser.setCorreo(correo);
+        existingUser.setModificado(now);
+
+        return userRepository.save(existingUser);
+    }
+
 }
