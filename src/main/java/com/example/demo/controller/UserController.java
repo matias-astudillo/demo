@@ -63,4 +63,14 @@ public class UserController {
         }
     }
 
+    @PatchMapping("/updatePassword/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody String newPassword) {
+        try {
+            User updatedUser = userService.updatePassword(id, newPassword);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getMessage()));
+        }
+    }
+
 }

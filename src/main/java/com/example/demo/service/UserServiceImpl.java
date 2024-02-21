@@ -71,4 +71,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(existingUser);
     }
 
+    @Override
+    public User updatePassword(Long id, String newPassword) {
+        // Verificar si la ID existe
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+
+        // Validar el formato de la contraseña
+        if (!Pattern.matches(PASSWORD_REGEX, newPassword)) {
+            throw new RuntimeException("El formato de la contraseña no es válido");
+        }
+
+        Date now = new Date();
+
+        User existingUser = userRepository.findById(id).orElse(null);
+        existingUser.setContrasena(newPassword);
+        existingUser.setModificado(now);
+
+        return userRepository.save(existingUser);
+    }
+
+
+
 }
