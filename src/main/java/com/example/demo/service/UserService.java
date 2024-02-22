@@ -1,13 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
+import java.util.UUID;
 
 public interface UserService {
     User createUser(User user);
 
-    void deleteUser(Long id);
+    void deleteUser(UUID id);
 
-    User updateUser(Long id, String nombre, String correo);
+    User updateUser(UUID id, String nombre, String correo);
 
-    User updatePassword(Long id, String newPassword);
+    User updatePassword(UUID id, String newPassword);
 }

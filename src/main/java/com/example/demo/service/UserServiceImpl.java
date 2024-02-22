@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.regex.Pattern;
 import java.util.Date;
+import java.util.UUID;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -13,16 +16,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private static final String EMAIL_REGEX = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$";
+    @Value("${app.validation.email-regex}")
+    private String EMAIL_REGEX;
+
+    @Value("${app.validation.password-regex}")
+    private String PASSWORD_REGEX;
 
     @Override
     public User createUser(User user) {
-        // Validaciones de correo y contraseña
-        if (userRepository.findByCorreo(user.getCorreo()) != null) {
-            throw new RuntimeException("El correo ya está registrado");
-        }
-
         // Validar el formato del correo electrónico
         if (!Pattern.matches(EMAIL_REGEX, user.getCorreo())) {
             throw new RuntimeException("El formato del correo electrónico no es válido");
@@ -40,17 +41,23 @@ public class UserServiceImpl implements UserService {
         user.setUltimoLogin(now);
         user.setActivo(true);
 
-        // Aquí se agrega el usuario en el repositorio
-        return userRepository.save(user);
+        try {
+            // Intentar guardar el usuario en el repositorio
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            // Capturar la excepción de violación de unicidad del correo electrónico
+            throw new RuntimeException("El correo ya está registrado");
+        }
+       
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public User updateUser(Long id, String nombre, String correo) {
+    public User updateUser(UUID id, String nombre, String correo) {
         // Verificar si la ID existe
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found with id: " + id);
@@ -68,11 +75,16 @@ public class UserServiceImpl implements UserService {
         existingUser.setCorreo(correo);
         existingUser.setModificado(now);
 
-        return userRepository.save(existingUser);
+        try {
+            return userRepository.save(existingUser);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("El correo ya está registrado");
+        }
+        
     }
 
     @Override
-    public User updatePassword(Long id, String newPassword) {
+    public User updatePassword(UUID id, String newPassword) {
         // Verificar si la ID existe
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found with id: " + id);

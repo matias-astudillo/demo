@@ -4,9 +4,10 @@ import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {  
+public interface UserRepository extends JpaRepository<User, UUID> {  
    /* // Método para guardar un usuario en la base de datos
     User save(User user);*/
     
@@ -16,6 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
    /*  // Método para buscar a todos los usuarios
     List<User> findAll();*/
     
-    void deleteById(Long id);
+    void deleteById(UUID id);
 
 }

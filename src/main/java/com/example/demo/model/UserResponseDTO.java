@@ -1,15 +1,16 @@
 package com.example.demo.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class UserResponseDTO {
-    private Long id;
+    private UUID id;
     private Date creado;
     private Date modificado;
     private Date ultimoLogin;
     private boolean activo;
 
-    public UserResponseDTO(Long id, Date creado, Date modificado, Date ultimoLogin, boolean activo) {
+    public UserResponseDTO(UUID id, Date creado, Date modificado, Date ultimoLogin, boolean activo) {
         this.id = id;
         this.creado = creado;
         this.modificado = modificado;
@@ -17,7 +18,7 @@ public class UserResponseDTO {
         this.activo = activo;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -37,7 +38,7 @@ public class UserResponseDTO {
         return activo;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

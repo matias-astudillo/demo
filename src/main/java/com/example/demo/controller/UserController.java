@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
         try {
             userService.deleteUser(id);
             return ResponseEntity.ok("Usuario eliminado exitosamente");
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO userData) {
+    public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UserUpdateDTO userData) {
         String nombre = userData.getNombre();
         String correo = userData.getCorreo();
         try {
@@ -64,7 +65,7 @@ public class UserController {
     }
 
     @PatchMapping("/updatePassword/{id}")
-    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody String newPassword) {
+    public ResponseEntity<?> updatePassword(@PathVariable UUID id, @RequestBody String newPassword) {
         try {
             User updatedUser = userService.updatePassword(id, newPassword);
             return ResponseEntity.ok(updatedUser);

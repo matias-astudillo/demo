@@ -4,6 +4,7 @@ import com.example.demo.model.Telefono;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID; 
 import io.swagger.v3.oas.annotations.Hidden;
 
 @Entity(name = "usuario")
@@ -12,10 +13,13 @@ public class User {
     @Id
     @Hidden
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     private String nombre;
+
+    @Column(unique = true)
     private String correo;
+    
     private String contrasena;
 
     @ElementCollection
@@ -33,11 +37,11 @@ public class User {
     @Hidden
     private boolean activo;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
