@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import com.example.demo.model.Telefono;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID; 
@@ -14,7 +15,8 @@ public class User {
     @Hidden
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
+    
+    @Size(max = 20, message = "nombre muy largo")
     private String nombre;
 
     @Column(unique = true)

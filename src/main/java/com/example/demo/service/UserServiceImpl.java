@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.regex.Pattern;
@@ -46,7 +47,12 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             // Capturar la excepción de violación de unicidad del correo electrónico
+            if(e.getCause() instanceof ConstraintViolationException){
             throw new RuntimeException("El correo ya está registrado");
+            }
+            else{
+                throw new RuntimeException("Campos muy largos");
+            }
         }
        
     }

@@ -5,6 +5,7 @@ import com.example.demo.model.ErrorInfo;
 import com.example.demo.model.UserResponseDTO;
 import com.example.demo.model.UserUpdateDTO;
 import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
             User newUser = userService.createUser(user);
             UserResponseDTO responseDTO = new UserResponseDTO(newUser.getId(), newUser.getCreado(), newUser.getModificado(), newUser.getUltimoLogin(), newUser.isActivo());
