@@ -61,7 +61,8 @@ public class UserController {
             User updatedUser = userService.updateUser(id, nombre, correo);
             return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getMessage()));
+            ErrorInfo errorInfo = new ErrorInfo(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
         }
     }
 
@@ -71,7 +72,8 @@ public class UserController {
             User updatedUser = userService.updatePassword(id, newPassword);
             return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorInfo(e.getMessage()));
+            ErrorInfo errorInfo = new ErrorInfo(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorInfo);
         }
     }
 

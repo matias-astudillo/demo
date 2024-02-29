@@ -17,7 +17,7 @@ public class UserResponseDTO {
         this.ultimoLogin = ultimoLogin;
         this.activo = activo;
     }
-
+/*
     public UUID getId() {
         return id;
     }
@@ -56,5 +56,5 @@ public class UserResponseDTO {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
+    }*/
 }
